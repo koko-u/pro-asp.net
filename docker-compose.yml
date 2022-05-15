@@ -1,0 +1,35 @@
+version: '3.2'
+services:
+  backend:
+    image: "kokouu/dotnet-backend:v1"
+    build:
+      context: ./dotnet/context
+    container_name: dotnet-backend
+    volumes:
+      - type: bind
+        source: ./workspace
+        target: /usr/workspace
+    working_dir: /usr/workspace
+    tty: true
+    stdin_open: true
+  db:
+    image: "kokouu/dotnet-db:v1"
+    build:
+      context: ./mysql/context
+    container_name: dotnet-db
+    volumes:
+      - type: volume
+        source: dotnet-db-data
+        target: /var/lib/mysql
+        volume:
+          nocopy: true
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: erTpTcqhNEDNIzF
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user1
+      MYSQL_PASSWORD: Pyxop3NwKgHjNec
+    ports:
+      - "13306:3306"
+volumes:
+  dotnet-db-data:
